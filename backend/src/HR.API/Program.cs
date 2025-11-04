@@ -13,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument();
 
+// Add MVC Controllers support for SettingsController
+builder.Services.AddControllers();
+
 // Add Swagger with JWT Authentication
 builder.Services.AddSwaggerGen(c =>
 {
@@ -43,8 +46,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Configure Database
-builder.Services.AddDbContext<HRPayDezkDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection")));
+// Only configure SQL Server if not in test environment
+if (!builder.Environment.EnvironmentName.Equals("Test", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddDbContext<HRPayDezkDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection")));
+}
 
 // Configure CORS
 builder.Services.AddCors(options =>
@@ -95,6 +102,9 @@ app.UseAuthorization();
 // Use FastEndpoints
 app.UseFastEndpoints();
 
+// Map MVC Controllers
+app.MapControllers();
+
 // Health check endpoint
 app.MapGet("/health", () => Results.Ok(new { Status = "Healthy", Timestamp = DateTime.UtcNow }))
    .WithName("HealthCheck");
@@ -120,3 +130,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Run();
+
+// Make the Program class accessible to integration tests
+public partial class Program { }
+
