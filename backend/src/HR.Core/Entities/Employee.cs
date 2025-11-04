@@ -12,7 +12,7 @@ namespace HR.Core.Entities
         public string? Address { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime HireDate { get; set; }
-        public string TerminationDate { get; set; }
+        public DateTime? TerminationDate { get; set; }
         public EmployeeStatus Status { get; set; } = EmployeeStatus.Active;
         public Guid DepartmentId { get; set; }
         public Guid PositionId { get; set; }
