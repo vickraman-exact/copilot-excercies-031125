@@ -120,3 +120,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Run();
+
+// Make the implicit Program class public and partial for integration testing
+public partial class Program { }
+
