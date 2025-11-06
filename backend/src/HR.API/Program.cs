@@ -13,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument();
 
+// Add traditional MVC controllers support
+builder.Services.AddControllers();
+
 // Add Swagger with JWT Authentication
 builder.Services.AddSwaggerGen(c =>
 {
@@ -43,8 +46,11 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Configure Database
-builder.Services.AddDbContext<HRPayDezkDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection")));
+if (builder.Environment.EnvironmentName != "Testing")
+{
+    builder.Services.AddDbContext<HRPayDezkDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection")));
+}
 
 // Configure CORS
 builder.Services.AddCors(options =>
@@ -95,6 +101,9 @@ app.UseAuthorization();
 // Use FastEndpoints
 app.UseFastEndpoints();
 
+// Map traditional MVC controllers
+app.MapControllers();
+
 // Health check endpoint
 app.MapGet("/health", () => Results.Ok(new { Status = "Healthy", Timestamp = DateTime.UtcNow }))
    .WithName("HealthCheck");
@@ -120,3 +129,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Run();
+
+// Make the implicit Program class accessible to test projects
+public partial class Program { }

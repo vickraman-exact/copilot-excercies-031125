@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="HR.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FastEndpoints" Version="6.0.0" />
     <PackageReference Include="FastEndpoints.Swagger" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />

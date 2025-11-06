@@ -1,6 +1,5 @@
 using FastEndpoints;
 using HR.API.Models;
-using HR.API.Models.Payslips;
 using HR.Core.Entities;
 using HR.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
